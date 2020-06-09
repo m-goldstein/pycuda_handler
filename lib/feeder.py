@@ -26,8 +26,3 @@ def vectorize_by_exchange(results=None):
 		    result_dict[exchange] = []
 		    result_dict[exchange].append(data_set[i][5])
     return result_dict
-
-#client           = init_client()
-#results          = client.make_query("execution_time", True, 100)
-#exchange_vector  = vectorize_by_exchange(results)
-

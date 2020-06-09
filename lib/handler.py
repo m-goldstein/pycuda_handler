@@ -66,17 +66,3 @@ class DBClient:
 	    except:
 		    print("[make_query] Error: could not make query: %s.\n"%(query_statement))
 		    return []
-	
-## main function ##
-def main():
-    client = DBClient()
-    print("Client created.")
-    client.init_session(HOST, PORT)
-    print("Client session initialized.")
-    client.switch_database(DB_NAME)
-    print("Database set.")
-    results = client.make_query("execution_time", True, 100)
-    print("Query made. Results: ")
-    print(results)
-#main()
-

@@ -7,9 +7,9 @@ import pycuda.driver as drv
 import numpy
 import math
 from pycuda.compiler import SourceModule
-from handler import DBClient
-from handler import HOST, PORT, USER, PASSWORD, DB_NAME
-from feeder import init_client, vectorize_by_exchange
+from handler         import DBClient
+from handler         import HOST, PORT, USER, PASSWORD, DB_NAME
+from feeder          import init_client, vectorize_by_exchange
 ###############################################################################
 BLOCK_SIZE = 512
 TILE_SIZE  = 32

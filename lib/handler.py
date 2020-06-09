@@ -17,7 +17,8 @@ class DBClient:
     def init_session(self, host=HOST, port=PORT, user=None, password=None):
 	    if (user is not None and password is not None):
 		    try:
-			    self.session = InfluxDBClient(host=host, port=port, username=user, password=password, ssl=True, verify_ssl=True)
+			    self.session = InfluxDBClient(host=host, port=port, username=user, \
+			    password=password, ssl=True, verify_ssl=True)
 			    return self.session
 		    except:
 			    print("Error establishing InfluxDB session with username %s\n"%(user))
@@ -44,51 +45,34 @@ class DBClient:
 	    except:
 		    print("Error: cannot switch to database '%s'.\n"%(db_name))
 		    pass
-
-"""
-def make_client_session(host=HOST, port=PORT, user=None, password=None):
-    if (user is not None and password is not None):
+    
+    def make_query(self, measurement="execution_time", is_ordered=True, limit=100):
+	    results = []
+	    query_statement = ''
+	    if (self.session is None):
+		    print("Error: DBClient session is not initialized.\n")
+		    return []
+	    if (is_ordered is True):
+		    query_statement = 'SELECT *	FROM "%s" ORDER BY time LIMIT %d'%(measurement, limit)
+	    else:
+		    query_statement = 'SELECT * FROM "%s" LIMIT %d'%(measurement, limit)
 	    try:
-		    client = InfluxDBClient(host=host, port=port, username=user, password=password, ssl=True, verify_ssl=True)
-		    return client
+		    results = self.session.query(query_statement)
+		    return results.raw
 	    except:
-		    print("Error establishing InfluxDB session with username %s\n"%(user))
-		    pass
-    else:
-	    try:
-		    client = InfluxDBClient(host=host, port=port)
-		    return client
-	    except:
-		    print("Error establishing InfluxDB session\n")
-		    pass
-
-
-def switch_database(client=None, db_name=DB_NAME):
-    if client is None:
-	    print('Error: no client specified')
-    elif db_name is None:
-	    print('Warning: no database specified. Using default.\n')
-	    try:
-		    client.switch_database('_internal')
-	    except:
-		    print("Error: cannot switch to default database.\n")
-		    
-    try:
-	    client.switch_database(db_name)
-    except:
-	    print("Error: cannot switch to database '%s'.\n"%(db_name))
-	    pass
-"""
-def make_query(measurement="execution_time", is_ordered=True, limit=100):
-    try:
-	    pass
-    except:
-	    pass
+		    print("Error: could not make query: %s.\n"%(query_statement))
+		    return []
 	
 ## main function ##
 def main():
-    client = DBClient() 
+    client = DBClient()
+    print("Client created.\n")
     client.init_session(HOST, PORT)
+    print("Client initialized.\n")
     client.switch_database(DB_NAME)
+    print("Database set.\n")
+    results = client.make_query("execution_time", True, 100)
+    print("Query made. Results: ")
+    print(results)
 main()
 

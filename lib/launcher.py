@@ -1,3 +1,6 @@
+"""
+    Launcher routines for JIT CUDA kernel compilation and execution.
+"""
 import os
 import pycuda.autoinit
 import pycuda.driver as drv

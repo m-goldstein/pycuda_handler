@@ -5,11 +5,11 @@ from handler import DBClient
 from handler import HOST, PORT, USER, PASSWORD, DB_NAME
 def init_client():
     client = DBClient()
-    print("Client created.\n")
+    print("Client created.")
     client.init_session(HOST, PORT)
-    print("Client session initialized.\n")
+    print("Client session initialized.")
     client.switch_database(DB_NAME)
-    print("Client session database set.\n")
+    print("Client session database set.")
     return client
 
 def vectorize_by_exchange(results=None):

@@ -70,11 +70,11 @@ class DBClient:
 ## main function ##
 def main():
     client = DBClient()
-    print("Client created.\n")
+    print("Client created.")
     client.init_session(HOST, PORT)
-    print("Client initialized.\n")
+    print("Client session initialized.")
     client.switch_database(DB_NAME)
-    print("Database set.\n")
+    print("Database set.")
     results = client.make_query("execution_time", True, 100)
     print("Query made. Results: ")
     print(results)

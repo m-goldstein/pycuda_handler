@@ -12,12 +12,23 @@ BLOCK_SIZE = 512
 TILE_SIZE  = 32
 CUDA_KERNELS_PATH   = os.getcwd() + '/kernels/'
 ###################
-s = ""
-with open(CUDA_KERNELS_PATH+'avg_kern.cu') as fd:
-    s = "".join([line for line in fd.readlines()])
-mod = SourceModule(s)
-avg_kern = mod.get_function('avg_kernel')
-
+def get_kernel(file_name=None, kern_name=None):
+    if file_name is None:
+	    print("[get_kernel] Error: No file name provided.\n")
+	    return None
+    elif kern_name is None:
+	    kern_name = file_name[0:file_name.find('.')]
+    try:
+	    s = ""
+	    with open(CUDA_KERNELS_PATH + file_name) as fd:
+		    s = "".join([line for line in fd.readlines()])
+	    mod = SourceModule(s)
+	    return mod.get_function(kern_name)
+    except:
+	    print("[get_kernel] Error: could not extract function pointer.\n")
+	    return None
+	
+kernel          = get_kernel('avg_kern.cu', 'avg_kernel')
 client          = init_client()
 results         = client.make_query("execution_time", True, 100000)
 exchange_vector = vectorize_by_exchange(results)
@@ -36,7 +47,7 @@ for key in key_vector:
 		output_size += 1
 	blockDim = (BLOCK_SIZE, 1, 1)
 	gridDim  = (math.ceil(output_size / (1.0 * TILE_SIZE)) * TILE_SIZE, 1, 1) 
-	avg_kern(drv.In(data_in), drv.Out(data_out), input_size, block=blockDim, grid=gridDim)
+	kernel(drv.In(data_in), drv.Out(data_out), input_size, block=blockDim, grid=gridDim)
 	print("Output Vector: ")
 	print(data_out[0])
 print("\n")

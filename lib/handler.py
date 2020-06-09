@@ -1,3 +1,7 @@
+"""
+    Wrapper class for InfluxDBClient
+    Used to establish database connection and handle I/O
+"""
 from influxdb import InfluxDBClient
 ########################### Connection Info ###################################
 HOST     = '192.168.2.41'
@@ -74,5 +78,5 @@ def main():
     results = client.make_query("execution_time", True, 100)
     print("Query made. Results: ")
     print(results)
-main()
+#main()
 

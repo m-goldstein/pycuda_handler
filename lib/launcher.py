@@ -40,8 +40,8 @@ def kernel_launcher(kernel=None, input_data=None, output_data=None):
 	    return None
     try:
 	    input_size          = numpy.int32(len(input_data))
-	    print("Input Vector: ")
-	    print(input_data)
+	    #print("Input Vector: ")
+	    #print(input_data)
 	    output_size         = input_size / (BLOCK_SIZE << 1)
 	    if (input_size % (BLOCK_SIZE << 1)) != 0:
 		    output_size += 1
@@ -55,7 +55,7 @@ def kernel_launcher(kernel=None, input_data=None, output_data=None):
 
 kernel          = get_kernel('avg_kernel.cu', 'avg_kernel')
 client          = init_client()
-results         = client.make_query("execution_time", True, 100000)
+results         = client.make_query("execution_time", True, 1000000)
 exchange_vector = vectorize_by_exchange(results)
 
 key_vector = [key for key in exchange_vector.keys()]
@@ -64,8 +64,8 @@ for key in key_vector:
 	data_in        = numpy.asarray(data_in).astype(numpy.float32)
 	data_out       = numpy.zeros_like(data_in)
 	input_size     = numpy.int32(len(data_in))
-	print("Results for exchange %s"%(key))
-	output = kernel_launcher(kernel, data_in, data_out)
-	print("Output Vector: ")
-	print(output[0])
+	#print("Results for exchange %s"%(key))
+	output         = kernel_launcher(kernel, data_in, data_out)
+	#print("Output Vector: ")
+	#print(output[0])
 print("\n")

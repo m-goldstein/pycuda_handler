@@ -10,10 +10,10 @@ from feeder import init_client, vectorize_by_exchange
 ###################
 BLOCK_SIZE = 512
 TILE_SIZE  = 32
-CUDA_DIR   = os.getcwd() + '/kernels/'
+CUDA_KERNELS_PATH   = os.getcwd() + '/kernels/'
 ###################
 s = ""
-with open(CUDA_DIR+'avg_kern.cu') as fd:
+with open(CUDA_KERNELS_PATH+'avg_kern.cu') as fd:
     s = "".join([line for line in fd.readlines()])
 mod = SourceModule(s)
 avg_kern = mod.get_function('avg_kernel')

@@ -7,11 +7,11 @@ from pycuda.compiler import SourceModule
 from handler import DBClient
 from handler import HOST, PORT, USER, PASSWORD, DB_NAME
 from feeder import init_client, vectorize_by_exchange
-###################
+###############################################################################
 BLOCK_SIZE = 512
 TILE_SIZE  = 32
 CUDA_KERNELS_PATH   = os.getcwd() + '/kernels/'
-###################
+################################################################################
 def get_kernel(file_name=None, kern_name=None):
     if file_name is None:
 	    print("[get_kernel] Error: No file name provided.\n")
@@ -28,7 +28,7 @@ def get_kernel(file_name=None, kern_name=None):
 	    print("[get_kernel] Error: could not extract function pointer.\n")
 	    return None
 	
-kernel          = get_kernel('avg_kern.cu', 'avg_kernel')
+kernel          = get_kernel('avg_kernel.cu', 'avg_kernel')
 client          = init_client()
 results         = client.make_query("execution_time", True, 100000)
 exchange_vector = vectorize_by_exchange(results)

@@ -25,36 +25,36 @@ class DBClient:
 			    password=password, ssl=True, verify_ssl=True)
 			    return self.session
 		    except:
-			    print("Error establishing InfluxDB session with username %s\n"%(user))
+			    print("[init_session] Error establishing InfluxDB session with username %s\n"%(user))
 			    pass
 	    else:
 		    try:
 			    self.session = InfluxDBClient(host=host, port=port)
 			    return self.session
 		    except:
-			    print("Error establishing InfluxDB session\n")
+			    print("[init_session] Error establishing InfluxDB session\n")
 			    pass
 
     def switch_database(self, db_name=DB_NAME):
 	    if self.session is None:
-		    print('Error: no client specified')
+		    print('[switch_database] Error: no client specified')
 	    elif db_name is None:
-		    print('Warning: no database specified. Using default.\n')
+		    print('[switch_database] Warning: no database specified. Using default.\n')
 		    try:
 			    self.session.switch_database('_internal')
 		    except:
-			    print("Error: cannot switch to default database.\n")		    
+			    print("[switch_database] Error: cannot switch to default database.\n")		    
 	    try:
 		    self.session.switch_database(db_name)
 	    except:
-		    print("Error: cannot switch to database '%s'.\n"%(db_name))
+		    print("[switch_database] Error: cannot switch to database '%s'.\n"%(db_name))
 		    pass
     
     def make_query(self, measurement="execution_time", is_ordered=True, limit=100):
 	    results = []
 	    query_statement = ''
 	    if (self.session is None):
-		    print("Error: DBClient session is not initialized.\n")
+		    print("[make_query] Error: DBClient session is not initialized.\n")
 		    return []
 	    if (is_ordered is True):
 		    query_statement = 'SELECT *	FROM "%s" ORDER BY time LIMIT %d'%(measurement, limit)
@@ -64,7 +64,7 @@ class DBClient:
 		    results = self.session.query(query_statement)
 		    return results.raw
 	    except:
-		    print("Error: could not make query: %s.\n"%(query_statement))
+		    print("[make_query] Error: could not make query: %s.\n"%(query_statement))
 		    return []
 	
 ## main function ##

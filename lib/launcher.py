@@ -11,8 +11,8 @@ from handler         import DBClient
 from handler         import HOST, PORT, USER, PASSWORD, DB_NAME
 from feeder          import init_client, vectorize_by_exchange
 ###############################################################################
-BLOCK_SIZE = 512
-TILE_SIZE  = 32
+BLOCK_SIZE          = 512
+TILE_SIZE           = 32
 CUDA_KERNELS_PATH   = os.getcwd() + '/kernels/'
 ################################################################################
 def get_kernel(file_name=None, kern_name=None):
@@ -40,8 +40,8 @@ def kernel_launcher(kernel=None, input_data=None, output_data=None):
 	    return None
     try:
 	    input_size          = numpy.int32(len(input_data))
-	    #print("Input Vector: ")
-	    #print(input_data)
+	    print("Input Vector: ")
+	    print(input_data)
 	    output_size         = input_size / (BLOCK_SIZE << 1)
 	    if (input_size % (BLOCK_SIZE << 1)) != 0:
 		    output_size += 1
@@ -64,8 +64,8 @@ for key in key_vector:
 	data_in        = numpy.asarray(data_in).astype(numpy.float32)
 	data_out       = numpy.zeros_like(data_in)
 	input_size     = numpy.int32(len(data_in))
-	#print("Results for exchange %s"%(key))
+	print("Results for exchange %s"%(key))
 	output         = kernel_launcher(kernel, data_in, data_out)
-	#print("Output Vector: ")
-	#print(output[0])
+	print("Output Vector: ")
+	print(output[0])
 print("\n")
